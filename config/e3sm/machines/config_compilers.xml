@@ -684,6 +684,11 @@ for mct, etc.
 </compiler>
 
 <compiler MACH="anlworkstation" COMPILER="gnu">
+  <CPPDEFS>
+    <append MODEL="ice"> -DUSE_PIO2 </append>
+    <append MODEL="ocn"> -DUSE_PIO2 </append>
+    <append MODEL="glc"> -DUSE_PIO2 </append>
+  </CPPDEFS>
   <ALBANY_PATH>/projects/install/rhel6-x86_64/ACME/AlbanyTrilinos/Albany/build/install</ALBANY_PATH>
   <CFLAGS>
     <append DEBUG="FALSE"> -O2  </append>
