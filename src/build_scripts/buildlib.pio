@@ -46,6 +46,7 @@ formatter_class=argparse.ArgumentDefaultsHelpFormatter
 def buildlib(bldroot, installpath, case):
 ###############################################################################
     caseroot = case.get_value("CASEROOT")
+    exeroot = case.get_value("EXEROOT")
     pio_version = case.get_value("PIO_VERSION")
     # If variable PIO_VERSION_MAJOR is defined in the environment then
     # we assume that PIO is installed on the system
@@ -127,9 +128,10 @@ def buildlib(bldroot, installpath, case):
                          os.path.join("src","flib","libpiof.*"),
                          os.path.join("src","clib","*.h"),
                          os.path.join("src","flib","*.mod")]
-        # ADIOS requires an ADIOS to NetCDF conversion library
+        # ADIOS requires an ADIOS to NetCDF conversion library/exe
         if adios_found:
             globs_to_copy.append(os.path.join("tools","adios2pio-nm","libadios2pio-nm-lib.*"))
+            globs_to_copy.append(os.path.join("tools","adios2pio-nm","adios2pio-nm.exe"))
         for glob_to_copy in globs_to_copy:
             installed_file_time = 0
             for item in glob.glob(os.path.join(pio_dir,glob_to_copy)):
@@ -137,7 +139,14 @@ def buildlib(bldroot, installpath, case):
                     installdir = "lib"
                 else:
                     installdir = "include"
-                installed_file = os.path.join(installpath,installdir,os.path.basename(item))
+
+                if item.endswith(".exe"):
+                    # FIXME: Move executables into a bin/util dir
+                    # Currently we are moving the PIO util exes to the same
+                    # dir as e3sm.exe (the EXEROOT) - ignoring installpath
+                    installed_file = os.path.join(exeroot,os.path.basename(item))
+                else:
+                    installed_file = os.path.join(installpath,installdir,os.path.basename(item))
                 item_time = os.path.getmtime(item)
                 if os.path.isfile(installed_file):
                     installed_file_time = os.path.getmtime(installed_file)
