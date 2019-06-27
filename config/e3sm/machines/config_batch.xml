@@ -583,12 +583,19 @@
       <template>template.case.test</template>
       <prereq>$BUILD_COMPLETE and $TEST</prereq>
     </job>
+    <job name="case.post_run_io">
+      <template>template.post_run_io</template>
+      <!--task_count>16</task_count-->
+      <walltime>00:30:00</walltime>
+      <dependency>case.run</dependency>
+      <prereq>$BUILD_COMPLETE</prereq>
+    </job>
     <job name="case.st_archive">
       <template>template.st_archive</template>
       <task_count>1</task_count>
       <walltime>0:20:00</walltime>
       <!-- If DOUT_S is true and case.run (or case.test) exits successfully then run st_archive-->
-      <dependency>case.run case.test</dependency>
+      <dependency>case.run case.test case.post_run_io</dependency>
       <prereq>$DOUT_S</prereq>
     </job>
   </batch_jobs>

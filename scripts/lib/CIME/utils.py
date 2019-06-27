@@ -1795,7 +1795,7 @@ def run_bld_cmd_ensure_logging(cmd, arg_logger, from_dir=None):
     expect(stat == 0, filter_unicode(errput))
 
 def get_batch_script_for_job(job):
-    return job if "st_archive" in job else "." + job
+    return job if ("st_archive" in job) or ("post_run_io" in job) else "." + job
 
 def string_in_list(_string, _list):
     """Case insensitive search for string in list
