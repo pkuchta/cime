@@ -77,6 +77,12 @@ class Compsets(GenericXML):
                 compsets[alias] = lname
             return compsets
 
+    def get_values(self):
+        compsets = self.get_children("compset")
+        return [(self.text(self.get_child("alias",root=compset)),
+                 self.text(self.get_child("lname", root=compset)))
+                for compset in compsets]
+
     def print_values(self, arg_help=True):
         help_text = self.get_value(name="help")
         compsets = self.get_children("compset")
